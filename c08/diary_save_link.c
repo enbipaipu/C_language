@@ -79,19 +79,86 @@ void print_tweets(const Diary *d)
     }
 }
 
+int save_diary(const Diary *d)
+{
+    FILE *fp = fopen("diary.txt", "w");
+    if (!fp)
+        goto error; // ファイルのオープンに失敗 (Failed to open file)
+
+    Tweet *next = d->first;
+    while (next)
+    {
+        fprintf(fp, "%ld,%s\n", next->ts, next->msg);
+        next = next->next;
+    }
+
+    fclose(fp);
+    return 0;
+
+error:
+    if (fp)
+        fclose(fp);
+    return 1;
+}
+
+Diary *load_diary()
+{
+    FILE *fp = fopen("diary.txt", "r");
+    if (!fp)
+        goto error; // ファイルのオープンに失敗 (Failed to open file)
+
+    Diary *d = (Diary *)malloc(sizeof(Diary));
+    if (!d)
+        goto error;
+
+    char buf[310];
+
+    while (fgets(buf, sizeof(buf), fp))
+    {
+
+        char *ts_str = strtok(buf, ",");
+        char *text = strtok(NULL, "\n");
+        time_t time = (time_t)strtol(ts_str, NULL, 10);
+
+        Tweet *t = (Tweet *)malloc(sizeof(Tweet));
+        t->ts = time;
+        strcpy(t->msg, text);
+
+        t->prev = d->last;
+        t->next = NULL;
+
+        if (d->last)
+            d->last->next = t;
+        d->last = t;
+        if (!d->first)
+            d->first = t;
+    }
+
+    return d;
+
+error:
+    if (fp)
+        fclose(fp);
+    return NULL;
+}
+
 int main()
 {
-    Diary *diary = create_diary();
+    const char *messages[] = {
+        "Hello, INIAD!",
+        "How are you?",
+        "Enryo sensei is cool!",
+    };
 
-    add_tweet(diary, "Hello, World!");
-    add_tweet(diary, "My second tweet!");
-    add_tweet(diary, "My third tweet!");
+    Diary *diary = load_diary();
+    if (!diary)
+    {
+        diary = create_diary();
+    }
 
-    Tweet *tw = get_tweet(diary, 1);
-    remove_tweet(diary, tw);
+    add_tweet(diary, messages[time(NULL) % 3]);
 
-    add_tweet(diary, "My last tweet!");
-
+    save_diary(diary);
     print_tweets(diary);
 
     return 0;

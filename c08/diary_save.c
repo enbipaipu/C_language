@@ -58,7 +58,7 @@ void print_tweets(const Diary *d)
 
 int save_diary(const Diary *d)
 {
-    FILE *fp = fopen("diary.bin", "w");
+    FILE *fp = fopen("diary.bin", "wb");
     if (!fp)
         goto error; // ファイルのオープンに失敗 (Failed to open file)
 
@@ -77,7 +77,7 @@ error:
 
 Diary *load_diary()
 {
-    FILE *fp = fopen("diary.bin", "r");
+    FILE *fp = fopen("diary.bin", "rb");
     if (!fp)
         goto error; // ファイルのオープンに失敗 (Failed to open file)
 
@@ -109,9 +109,8 @@ int main()
     }
 
     add_tweet(diary, messages[time(NULL) % 3]);
-    print_tweets(diary);
-
     save_diary(diary);
+    print_tweets(diary);
 
     return 0;
 }
