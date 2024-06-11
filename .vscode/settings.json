@@ -3,7 +3,23 @@
     "stdio.h": "c",
     "string.h": "c",
     "time.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "array.h": "c",
+    "camera.h": "c",
+    "color.h": "c",
+    "utils.h": "c",
+    "geometry.h": "c",
+    "light.h": "c",
+    "raytracer.h": "c",
+    "png_render.h": "c",
+    "material.h": "c",
+    "mesh.h": "c",
+    "surface.h": "c",
+    "stdint.h": "c",
+    "ray.h": "c",
+    "math.h": "c",
+    "scene.h": "c",
+    "vector.h": "c"
   },
   "cSpell.words": ["Primzahlen"]
 }
