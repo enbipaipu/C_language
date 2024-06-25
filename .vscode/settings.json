@@ -19,7 +19,8 @@
     "ray.h": "c",
     "math.h": "c",
     "scene.h": "c",
-    "vector.h": "c"
+    "vector.h": "c",
+    "random": "c"
   },
   "cSpell.words": ["Primzahlen"]
 }
